@@ -42,13 +42,19 @@ func dine() {
 	seated := &sync.WaitGroup{}
 	seated.Add(len(philosophers))
 
-	var forks = make(map[int]*sync.WaitGroup)
+	var forks = make(map[int]*sync.Mutex)
 
 	for i := 0; i < len(philosophers); i++ {
-		forks[i] = &sync.WaitGroup{}
+		forks[i] = &sync.Mutex{}
 	}
 
 	for i := 0; i < len(philosophers); i++ {
 		go diningProblem(philosophers[i], wg, forks, seated)
 	}
+
+	wg.Wait()
+}
+
+func diningProblem(philosopher Philosopher, wg *sync.WaitGroup, forks map[int]*sync.Mutex, seated *sync.WaitGroup) {
+	defer wg.Done()
 }
